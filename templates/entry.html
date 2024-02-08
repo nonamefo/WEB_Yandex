@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'super.html' %}
+    {% block title %}
+    Вход
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="container">
+        <h2>Registration Form</h2>
+        <form action="http://127.0.0.1:5000/" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your name.." required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Your password.." required>
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
+{% endblock %}
+</body>
+</html>
