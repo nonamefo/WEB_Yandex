@@ -2,10 +2,14 @@
 <head>
     {% extends 'super.html' %}
 
-    {% block title %}
-    Дом милый дом
-    {% endblock %}
+
+    <title>{{ title }}</title>
+
 </head>
 <body>
-
+{%block body %}
+    <div style="background-color: white;min-height: 300px;padding: 1%">
+        hi
+    </div>
+{% endblock %}
 </body>

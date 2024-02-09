@@ -3,14 +3,9 @@ from flask import render_template, Flask, request
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 @app.route('/home')
 def home():
-    return render_template("home.html")
-
-
-@app.route('/', methods=['POST'])
-def login():
     if request.method == "POST":
         try:
             name = request.form["name"]
@@ -27,7 +22,16 @@ def login():
             except Exception as ex:
                 return render_template("error.html")
         except Exception as ex:
-            return render_template("error_text.html")
+            return render_template("error.html")
+    else:
+        return render_template("home.html", title="Дом милый дом")
+
+
+@app.route('/tests/<num>')
+def tests(num):
+
+    return render_template("super_tesks.html")
+#     , lst=open(f"{num}").readlines()
 
 
 @app.route('/enter')
@@ -40,5 +44,15 @@ def regester():
     return render_template('regestor.html')
 
 
+@app.route('/about_us')
+def about_us():
+    return render_template("about_us.html")
+
+
+@app.route('/error')
+def error():
+    return render_template('error.html')
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000)
