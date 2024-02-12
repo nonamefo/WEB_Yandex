@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'super.html' %}
+    <meta charset="UTF-8">
+    {% block title %}О нас{% endblock %}
+</head>
+<body>
+{% block body %}
+<form action="http://127.0.0.1:5000/te " method="post">
+    <div>
+        <label for="name">Name:</label>
+        <input type="checkbox" id="name" name="name">
+
+        <label for="word">Password:</label>
+        <input type="checkbox" id="word" name="word">
+
+        <input type="submit" value="Login">
+    </div>
+</form>
+{% endblock %}
+</body>
+</html>

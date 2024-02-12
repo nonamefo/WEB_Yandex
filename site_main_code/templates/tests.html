@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="test">
+    <div>
+        <p>вопрос 1?</p>
+
+        <label>
+            <input type="radio" name="1" data-right>
+            вариант 1
+        </label>
+        <label>
+            <input type="radio" name="1">
+            вариант 2
+        </label>
+        <label>
+            <input type="radio" name="1">
+            вариант 3
+        </label>
+    </div>
+    <div>
+        <p>вопрос 2?</p>
+
+        <label>
+            <input type="radio" name="2">
+            вариант 1
+        </label>
+        <label>
+            <input type="radio" name="2" data-right>
+            вариант 2
+        </label>
+        <label>
+            <input type="radio" name="2">
+            вариант 3
+        </label>
+    </div>
+    <div>
+        <p>вопрос 3?</p>
+        <form action="/answer" method="post">
+            <label for="name">{{ i }}</label>
+            <input type="text" id="name" name="name" placeholder="Your name.." required>
+            <input type="submit" value="отправить">
+        </form>
+    </div>
+</div>
+</body>
+</html>
