@@ -5,6 +5,8 @@ from site_main_code import app
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home')
+@app.route('/home_page')
+@app.route('/main_page')
 def home():
     if request.method == "POST":
         try:
@@ -60,7 +62,7 @@ def enter():
     return render_template("entry.html")
 
 
-@app.route('/te', methods=["POST"])
+@app.route('/test', methods=["POST"])
 def test_te():
     name = request.form.get('name')
     word = request.form.get('word')
