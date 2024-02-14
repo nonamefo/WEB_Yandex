@@ -1,6 +1,10 @@
-from flask import request, render_template
+from site_main_code import *
+from site_main_code.db import *
 
-from site_main_code import app
+
+@app.context_processor
+def inject_message():
+    return dict(name_by_key=name_by_key())
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -9,29 +13,29 @@ from site_main_code import app
 @app.route('/main_page')
 def home():
     if request.method == "POST":
+        db = ['ggg']
         try:
             name = request.form["name"]
             email = request.form["email"]
             password = request.form["password"]
-            print(name, email, password)
             return render_template("home.html")
         except KeyError:
             try:
                 name = request.form["name"]
                 password = request.form["password"]
-                print(name, password)
-                return render_template("home.html")
+                if name in db:
+                    if password in db:
+                        res = (make_response(render_template("home.html")))
+                        res.set_cookie('foo', 'bar', max_age=60 * 60 * 24 * 365 * 2)
+                        return res
             except Exception as ex:
                 return render_template("error.html")
         except Exception as ex:
             return render_template("error.html")
     else:
-        return render_template("home.html", title="Дом милый дом")
-
-
-@app.route('/tests/<num>')
-def tests(num):
-    return render_template("super_tesks.html", lst=open(f"{num}").readlines())
+        # res = make_response(render_template("home.html"))
+        # res.set_cookie('foo', 'bar', max_age=60 * 60 * 24 * 365 * 2)
+        return render_template("home.html")
 
 
 @app.route('/answer', methods=["POST"])
@@ -62,11 +66,6 @@ def enter():
     return render_template("entry.html")
 
 
-@app.route('/test', methods=["POST"])
-def test_te():
-    name = request.form.get('name')
-    word = request.form.get('word')
-    return f"{name} + {word}"
 @app.route('/regester')
 def regester():
     return render_template('regestor.html')
@@ -80,6 +79,18 @@ def about_us():
 @app.route('/error')
 def error():
     return render_template('error.html')
+
+
+@app.route('/test', methods=["POST"])
+def test_te():
+    name = request.form.get('name')
+    word = request.form.get('word')
+    return f"{name} + {word}"
+
+
+@app.route('/tests/<num>')
+def tests(num):
+    return render_template("super_tesks.html", lst=open(f"{num}").readlines())
 
 
 if __name__ == '__main__':
