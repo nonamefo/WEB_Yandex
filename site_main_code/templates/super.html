@@ -9,25 +9,30 @@
     {% endblock %}
 </head>
 <body>
-    <header>
-        <div style="padding: 2%;background-color: black;margin-bottom: 3%;">
+<header>
+    <div style="padding: 2%;background-color: black;margin-bottom: 3%;">
 
-            <a class="white_text" style="margin-right:70%;text-align: right" href="/">
-                <img src="{{ url_for('static', filename='/img/img-transformed.png') }}" width=3% height=3%/>
-            </a>
-            {% if request.cookies.get('foo') == None %}
-            <a class="white_text" style="text-align: left;" href="/enter">  Вход </a>
-            <a class="white_text" style="margin-left: 3%;text-align: left;" href="/regester">Регистрация</a>
-            {% else %}
-            <a class="white_text" style="text-align: left;">{{name_by_key}}</a>
+        <a class="white_text" style="margin-right:75%;text-align: left" href="/">
+            <img src="{{ url_for('static', filename='/img/img-transformed.png') }}" width=3% height=3%/>
+        </a>
 
-            {% endif %}
+        {% if request.cookies.get('foo') == None %}
 
-            <a class="white_text" style="margin-left: 3%;text-align: left;" href="/about_us">О нас</a>
-        </div>
-    </header>
-    {% block body %}
-        <h1 style="text-align: center">Hi, we are sorry, but this page isn't working now. Give us some time to finish</h1>
-    {% endblock %}
+        <a class="white_text" style="text-align: right;" href="/enter"> Вход </a>
+        <a class="white_text" style="margin-left: 3%;text-align: right;" href="/regester">Регистрация</a>
+
+        {% else %}
+
+        <a class="white_text" style="text-align: right;" href="/user_page">{{name_by_key}}</a>
+        <a class="white_text" style="margin-left: 3%;margin-right: -2%;text-align: right;" href="/logout">выход</a>
+
+        {% endif %}
+
+        <a class="white_text" style="margin-left: 3%;margin-right: -2%;text-align: right;" href="/about_us">О нас</a>
+    </div>
+</header>
+{% block body %}
+<h1 style="text-align: center">Hi, we are sorry, but this page isn't working now. Give us some time to finish</h1>
+{% endblock %}
 </body>
 </html>
