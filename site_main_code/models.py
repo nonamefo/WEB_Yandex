@@ -5,8 +5,12 @@ class User():
     pass
 
 
-def name_by_key():
-    if request.cookies.get('foo') == '1':
-        return "Всеволод Бари"
-    if request.cookies.get('foo') == '2':
-        return "Antony"
+def name_by_key(nickname=None, email=None, password=None, id=None):
+    if email is not None:
+        db.regestor(nickname=nickname, email=email, password=password)
+    elif nickname is not None:
+        db.check_login(nickname=nickname, password=password)
+    elif id is not None:
+        db.find_user_by_id(user_id=id)
+    else:
+        print('<eufufufufuf')

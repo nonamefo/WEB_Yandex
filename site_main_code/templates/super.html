@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title%}{% endblock%}</title>
+    <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
     {% block link %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/regestor.css')}}">
@@ -16,7 +17,7 @@
             <img src="{{ url_for('static', filename='/img/img-transformed.png') }}" width=3% height=3%/>
         </a>
 
-        {% if request.cookies.get('foo') == None %}
+        {% if request.cookies.get('user_id') == None %}
 
         <a class="white_text" style="text-align: right;" href="/enter"> Вход </a>
         <a class="white_text" style="margin-left: 3%;text-align: right;" href="/regester">Регистрация</a>
