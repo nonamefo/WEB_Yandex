@@ -1,12 +1,10 @@
 import random
 
 from site_main_code import *
-from site_main_code.models import *
+from site_main_code.database import *
 
 
-@app.context_processor
-def inject_message():
-    return dict(name_by_key=name_by_key())
+
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -28,6 +26,14 @@ def user_page():
 def answer_test():
     return render_template("error.html")
 
+
+@app.route('/login', methods=['POST'])
+def login():
+
+    res = make_response(render_template('logout.html'))
+    res.set_cookie('user_id', str(regustration_or_login()), max_age=60*60*24*365*2)
+    return res
+
 @app.route('/logout')
 def logout():
     res = make_response(render_template('logout.html'))
@@ -44,7 +50,7 @@ def pass_sucses():
             password = request.form["password"]
             if (name is not None) and (email is not None) and (password is not None):
                 rec = make_response(render_template("acept_entrense.html"))
-                rec.set_cookie('user_id', f'{name_by_key(nickname=name, email=email, password=password)}', max_age=60 * 60 * 24 * 365 * 2)
+                rec.set_cookie('user_id', f'{regestration_or_login()}', max_age=60 * 60 * 24 * 365 * 2)
                 return rec
         except KeyError:
             try:
