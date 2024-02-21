@@ -19,17 +19,16 @@
 
         {% if request.cookies.get('user_id') == None %}
 
-        <a class="white_text" style="text-align: right;" href="/enter"> Вход </a>
-        <a class="white_text" style="margin-left: 3%;text-align: right;" href="/regester">Регистрация</a>
+        <a class="white_text" style="text-align: right;" href="/login"> Вход </a>
+        <a class="white_text" style="text-align: right;margin-left: 3%;" href="/regester">Регистрация</a>
 
         {% else %}
 
         <a class="white_text" style="text-align: right;" href="/user_page">{{name_by_key}}</a>
-        <a class="white_text" style="margin-left: 3%;margin-right: -2%;text-align: right;" href="/logout">выход</a>
 
         {% endif %}
 
-        <a class="white_text" style="margin-left: 3%;margin-right: -2%;text-align: right;" href="/about_us">О нас</a>
+        <a class="white_text" style="margin-left: 3%;margin-right: 2%;text-align: right;" href="/about_us">О нас</a>
     </div>
 </header>
 {% block body %}
