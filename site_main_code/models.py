@@ -6,7 +6,7 @@ def get_info_by_name(nickname: str, password: str):
 
 
 def get_info_by_email(email: str, nickname: str, password: str):
-    regustration(email, nickname, password)
+    return regustration(email, nickname, password)
 
 def name_and_password():
     return get_user_name_password()

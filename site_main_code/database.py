@@ -17,6 +17,7 @@ def regustration(email: str, nickname: str, password: str):
     article = Article(email=email, nickname=nickname, password=password)
     db.session.add(article)
     db.session.commit()
+    return get_by_name(nickname, password)[1]
 
 
 def get_by_name(nickname: str, password: str):
