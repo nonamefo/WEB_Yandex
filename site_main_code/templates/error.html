@@ -1,20 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
     {% extends 'super.html' %}
     <meta charset="UTF-8">
     {% block title %}
     Ошибка
     {% endblock %}
 
-</head>
-<body>
-  <div style="text-align: center">
       {% block body %}
+      <div style="text-align: center">
+
       <H1 >
           Введённые данные не коректны. Пожалуйста, попробуйте войти или зарегестрироваться еще раз.
       </H1>
-      {% endblock %}
-  </div>
-</body>
-</html>
+    </div>
+{% endblock %}

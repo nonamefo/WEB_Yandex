@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% extends 'super.html' %}
+{% extends 'super.html' %}
 
+{{% block title %}}
+{{ title }}
+{{% endblock %}}
 
-    <title>{{ title }}</title>
-
-</head>
-<body>
 {%block body %}
 <div style="background-color: white;min-height: 300px;padding: 1%;">
     <form action="http://127.0.0.1:5000/" method="post">
@@ -17,5 +13,3 @@
     </form>
 </div>
 {% endblock %}
-</body>
-</html>

@@ -5,16 +5,16 @@ from site_main_code import *
 # from site_main_code import db, app
 # app.app_context().push()
 # db.create_all()
-
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(40))
     password = db.Column(db.String(40))
     email = db.Column(db.Text, nullable=True)
+    isAdmin = db.Column(db.Boolean, nullable=False)
 
 
-def regustration(email: str, nickname: str, password: str):
-    article = Article(email=email, nickname=nickname, password=password)
+def regustration(email: str, nickname: str, password: str, isAdmin: bool = False):
+    article = Article(email=email, nickname=nickname, password=password, isAdmin=isAdmin)
     db.session.add(article)
     db.session.commit()
     return get_by_name(nickname, password)[1]
@@ -27,6 +27,8 @@ def get_by_name(nickname: str, password: str):
         lst = [i.id] + [i.nickname] + [i.password]
     if lst[2] == password:
         return True, lst[0]
+
+
 def get_user_name_password():
     id = request.cookies.get("user_id")
     print(id)
@@ -39,6 +41,7 @@ def get_user_name_password():
         return lst[1], lst[2]
     else:
         return None
+
 
 def get_by_cookie_name():
     id = request.cookies.get("user_id")

@@ -2,6 +2,15 @@ from site_main_code import *
 from site_main_code.models import *
 
 
+
+# @app.before_request
+# def before_request():
+#     if not request.is_secure:
+#         url = request.url.replace('http://', 'https://', 1)
+#         code = 301
+#         return redirect(url, code=code)
+
+
 @app.context_processor
 def inject_message():
     return dict(name_by_key=name_by_key())
@@ -56,7 +65,6 @@ def autorise():
 def login():
     if request.method == "POST":
         try:
-
             name = request.form["nickname"]
             password = request.form["password"]
 

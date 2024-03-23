@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% extends 'super.html' %}
+{% extends 'super.html' %}
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    {% block links %}
+{% block links %}
         <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
         <link rel="stylesheet" href="{{url_for('static', filename='css/regestor.css')}}">
-    {% endblock %}
-</head>
-<body>
-{% block body %}{% endblock %}
+{% endblock %}
+
+{% block body %}
     <form action="/" method="POST">
         {% block task %}
         {% for i in lst %}
@@ -21,5 +17,4 @@
         {% endfor %}
         {% endblock %}
     </form>
-</body>
-</html>
+{% endblock %}
