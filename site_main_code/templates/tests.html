@@ -1,51 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tests Data</title>
 </head>
 <body>
-<div id="test">
-    <div>
-        <p>вопрос 1?</p>
-
-        <label>
-            <input type="radio" name="1" data-right>
-            вариант 1
-        </label>
-        <label>
-            <input type="radio" name="1">
-            вариант 2
-        </label>
-        <label>
-            <input type="radio" name="1">
-            вариант 3
-        </label>
-    </div>
-    <div>
-        <p>вопрос 2?</p>
-
-        <label>
-            <input type="radio" name="2">
-            вариант 1
-        </label>
-        <label>
-            <input type="radio" name="2" data-right>
-            вариант 2
-        </label>
-        <label>
-            <input type="radio" name="2">
-            вариант 3
-        </label>
-    </div>
-    <div>
-        <p>вопрос 3?</p>
-        <form action="/answer" method="post">
-            <label for="name">{{ i }}</label>
-            <input type="text" id="name" name="name" placeholder="Your name.." required>
-            <input type="submit" value="отправить">
-        </form>
-    </div>
-</div>
+<h1>Tests Data</h1>
+{% if request.method == 'GET' %}
+<form action="/check/{{ data['questions']['question_id'] }}" method="post">
+    <ul>
+        {% for task in data['questions']['question'].split(', ') %}
+        <li>{{ task }}</li>
+        <input type="text" id="answer{{ loop.index }}" name="answer{{ loop.index }}">
+        {% endfor %}
+    </ul>
+    <button type="submit">Check Answers</button>
+</form>
+{% endif %}
+{% if request.method == 'POST' %}
+<h2>Results:</h2>
+<ul>
+    {% for task, user_answer in zip(data['questions']['answer_options'].split(', '), user_data) %}
+    <li>{{ task }} - User Answer: {{ user_answer }}</li>
+    {% if user_answer == task %}
+    <span style="color: green;">Correct!</span>
+    {% else %}
+    <span style="color: red;">Incorrect.</span>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
 </body>
 </html>

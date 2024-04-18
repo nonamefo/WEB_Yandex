@@ -10,12 +10,14 @@
     {% endblock %}
 </head>
 <body>
+
 <header>
     <div style="padding: 2%;background-color: black;margin-bottom: 3%;">
 
         <a class="white_text" style="margin-right:60%;text-align: left" href="/">
             <img src="{{ url_for('static', filename='/img/img-transformed.png') }}" width=3% height=3%/>
         </a>
+
 
         {% if request.cookies.get('user_id') == None %}
 

@@ -1,8 +1,10 @@
 {% extends 'super.html' %}
 
 {% block title %}Дом милый дом{% endblock %}
-{%block body %}
-    <div style="background: white;padding-left: 20px;padding-top: 20px;padding-bottom: 20px;margin-left: 15px;margin-right: 15px;min-height: 250px">
-        hi
+{% block body %}
+    <div style="background: white; padding-left: 20px; padding-top: 20px; padding-bottom: 20px; margin-left: 15px; margin-right: 15px; min-height: 250px;">
+        {% for i in get_all_tasks['questions'] %}
+        <a  href="{{ '/tests/' ~ i['question_id'] }}"><pre>question_id:  {{ i['question_id'] }}</pre></a>
+        {% endfor %}
     </div>
 {% endblock %}

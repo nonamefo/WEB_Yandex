@@ -1,0 +1,11 @@
+{% extends 'super.html' %}
+
+{% block title %}Результаты{% endblock %}
+
+{% block body %}
+{% if answer == True %}
+    <p>Все супер. Решено верно</p>
+{% else %}
+    <p>Хм что-то не так, попробуй еще раз</p>
+{% endif %}
+{% endblock %}

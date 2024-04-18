@@ -14,7 +14,7 @@ class Article(db.Model):
 
 
 def regustration(email: str, nickname: str, password: str, isAdmin: bool = False):
-    article = Article(email=email, nickname=nickname, password=password, isAdmin=isAdmin)
+    article = Article(nickname=nickname, password=password, email=email, isAdmin=isAdmin)
     db.session.add(article)
     db.session.commit()
     return get_by_name(nickname, password)[1]
