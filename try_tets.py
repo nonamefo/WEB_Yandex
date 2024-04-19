@@ -1,53 +1,3 @@
-# from site_main_code import *
-# from site_main_code.models import *
-#
-#
-# @app.context_processor
-# def inject_message():
-#     return dict(
-#         name_by_key=name_by_key(),
-#         get_test=get_test,
-#         get_all_tasks=get_all_tasks(),
-#         link_API=link_API,
-#         zip=zip,
-#     )
-#
-#
-# @app.route('/', methods=['POST', 'GET'])
-# def main():
-#     return render_template('home.html')
-#
-#
-# @app.route('/login', methods=['POST', 'GET'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.form
-#         nickname = data['nickname']
-#         password = data['password']
-#         res = make_response('acept_login.html')
-#         name, id = get_id_by_name(nickname=nickname, password=password)
-#         res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
-#         return res
-#     if request.method == 'GET':
-#         return render_template('login.html')
-#
-#
-# @app.route('/regester', methods=['POST', 'GET'])
-# def regester():
-#     if request.method == 'POST':
-#         data = request.form
-#         nickname = data['nickname']
-#         email = data['email']
-#         password = data['password']
-#         create_user(nickname=nickname, email=email, password=password)
-#         res = make_response('acept_login.html')
-#         name, id = get_id_by_name(nickname=nickname, password=password)
-#         res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
-#         return res
-#     if request.method == 'GET':
-#         return render_template('regestor.html')
-
-
 from site_main_code import *
 from site_main_code.models import *
 
@@ -71,8 +21,7 @@ def home():
 
 @app.route('/user_page')
 def user_page():
-    data = name_and_password()
-    return render_template('user_page.html', name=data)
+    return render_template('user_page.html')
 
 
 @app.route('/answer', methods=["POST"])
@@ -83,23 +32,29 @@ def answer_test():
 @app.route('/login', methods=['POST', 'GET'])
 # @cache.cached(timeout=300)
 def login():
-    if request.method == 'POST':
-        data = request.form
-        nickname = data['nickname']
-        password = data['password']
-        res = make_response(render_template('acept_login.html'))
-        name, id = get_id_by_name(nickname=nickname, password=password)
-        res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
-        return res
-    if request.method == 'GET':
-        return render_template('login.html')
+    if request.method == "POST":
+        try:
+            name = request.form["nickname"]
+            password = request.form["password"]
+
+            name, id = get_id_by_name(nickname=name, password=password)
+
+            if id is not False:
+                res = make_response(render_template("acept_login.html"))
+                res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
+                return res
+        except Exception as ex:
+            return render_template("error.html")
+
+    else:
+        return render_template("login.html")
 
 
 @app.route('/logout')
 # @cache.cached(timeout=300)
 def logout():
     res = make_response(render_template('logout.html'))
-    res.set_cookie('user_id', request.cookies.get('user_id'), max_age=0)
+    res.set_cookie('foo', request.cookies.get('foo'), max_age=0)
     return res
 
 
@@ -142,7 +97,7 @@ def regester():
         except:
             return redirect('/error')
         create_user(nickname=name, email=email, password=password)
-        name, id = get_id_by_name(nickname=name, password=password)
+        name, id = get_info_by_name(nickname=name, password=password)
 
         if id is not False:
             res = make_response(render_template("acept_login.html"))
@@ -175,6 +130,9 @@ def tests(id):
     if request.method == "GET":
         data = get_test(id)
         return render_template('tests.html', data=data)
+
+
+
 
 
 @app.route('/check/<int:id>', methods=['POST'])

@@ -22,10 +22,11 @@ def regustration(email: str, nickname: str, password: str, isAdmin: bool = False
 
 def get_by_name(nickname: str, password: str):
     users = Article.query.filter_by(nickname=nickname).all()
-    lst = []
+    lst = ''
     for i in users:
-        lst = [i.id] + [i.nickname] + [i.password]
-    if lst[2] == password:
+        lst = str(i.id) + ', ' + str(i.nickname) + ', ' + str(i.password)
+    print(lst)
+    if lst.split(', ')[2] == password:
         return True, lst[0]
 
 

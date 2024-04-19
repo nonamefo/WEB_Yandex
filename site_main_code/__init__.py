@@ -1,14 +1,16 @@
-import requests
+import random
 import os
-from flask import Flask, render_template, request, make_response, jsonify
+
+from flask import Flask, render_template, request, make_response, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_caching import Cache
 
+import requests
 
 app = Flask(__name__)
 
-os.environ['FLASK_ENV'] = 'production'
+# os.environ['FLASK_ENV'] = 'production'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['DEBUG'] = True
 app.config['TESTING'] = False
@@ -19,7 +21,6 @@ app.config['USE_X_SENDFILE'] = False
 
 db = SQLAlchemy(app)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
-csrf = CSRFProtect(app)
 link_API = 'http://127.0.0.1:5050'
 
 try:
