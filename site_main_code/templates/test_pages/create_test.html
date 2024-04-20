@@ -1,0 +1,31 @@
+{% extends 'super.html' %}
+{% block title %}
+Создание тестов
+{% endblock %}
+
+{% block body %}
+{% if request.method == 'POST' %}
+<form action="/save_test" method="post">
+    <input type="hidden" name="question" value="{{data['question']}}">
+    <ul>
+        {% for i in range(1, int(data['question']) + 1) %}
+        <li>Вопрос {{i}}</li>
+        <li><input type="text" name="task_{{i}}"></li>
+        <li><input type="text" name="answer{{ loop.index }}"></li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Отправить ответы</button>
+</form>
+{% endif %}
+{% if request.method == 'GET' %}
+<form action="#" method="post">
+    <div style="text-align: center; padding-top: 20px; background: white;min-height: 250px;">
+        <pre>
+            <label style="margin-block: 20px">Из скольких вопросов будет состоят тест</label>
+            <input style="margin-block: 20px" id="question" name="question">
+            <input style="margin-block: 5px" type="submit" value="Начать создание">
+        </pre>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

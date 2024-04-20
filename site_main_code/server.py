@@ -24,7 +24,7 @@
 #         data = request.form
 #         nickname = data['nickname']
 #         password = data['password']
-#         res = make_response('acept_login.html')
+#         res = make_response('acsept_login.html')
 #         name, id = get_id_by_name(nickname=nickname, password=password)
 #         res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
 #         return res
@@ -40,12 +40,17 @@
 #         email = data['email']
 #         password = data['password']
 #         create_user(nickname=nickname, email=email, password=password)
-#         res = make_response('acept_login.html')
+#         res = make_response('acsept_login.html')
 #         name, id = get_id_by_name(nickname=nickname, password=password)
 #         res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
 #         return res
 #     if request.method == 'GET':
 #         return render_template('regestor.html')
+# @app.route('/test', methods=["POST"])
+# def test_te():
+#     name = request.form.get('name')
+#     word = request.form.get('word')
+#     return f"{name} + {word}"
 
 
 from site_main_code import *
@@ -60,24 +65,69 @@ def inject_message():
         get_all_tasks=get_all_tasks(),
         link_API=link_API,
         zip=zip,
+        int=int,
     )
 
+
+
+@app.route('/tests/<id>', methods=['GET', 'POST'])
+def tests(id):
+    if request.method == "GET":
+        data = get_test(id)
+        return render_template('test_pages/tests.html', data=data)
+    if request.method == "POST":
+        user_data = request.form.values()
+        data = get_test(id)
+        return render_template('test_pages/tests.html', data=data, user_data=user_data)
+
+
+@app.route('/create_test', methods=['POST', 'GET'])
+def create_test():
+    if request.method == 'GET':
+        return render_template('test_pages/create_test.html')
+
+    if request.method == 'POST':
+        data = request.form
+        return render_template('test_pages/create_test.html', data=data)
+
+
+@app.route('/save_test', methods=['post'])
+def check():
+    data = request.form.to_dict()
+    num_questions = int(data['question'])
+
+    task_values = [request.form.get(f"task_{i}") for i in range(1, num_questions + 1)]
+    answer_values = [request.form.get(f"answer{i}") for i in range(1, num_questions + 1)]
+
+    combined_task_data = ", ".join(task_values)
+    combined_answer_data = ", ".join(answer_values)
+    requests.post(f'http://127.0.0.1:5050/{API_key}/questions',
+                  json={'question_id': random.randint(0, 10_000_000_000),
+                        # использовать уникальное значение() иначе возникает 422 ошибка:
+                        # Question with id 'question_id' already in the database")
+                        'question': combined_task_data,  # вопрос который задаётся
+                        'type': 'one_choice',  # тип вопроса множественный/единственный ответ
+                        'answer_options': '',  # варианты ответов указанных через запятую
+                        'answer': combined_answer_data,  # ответ/ответы указанные через запятую
+                        'owner_id': random.randint(0, 10_000_000_000),  # id создателя вопроса
+                        'is_public': True}).json()  # доступен ли всем вопрос
+    return render_template('test_pages/acsepte.html')
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home')
 def home():
-    return render_template("home.html", title='Home page')
+    return render_template("site_pages/home.html", title='Home page')
 
 
 @app.route('/user_page')
 def user_page():
     data = name_and_password()
-    return render_template('user_page.html', name=data)
+    return render_template('user/user_page.html', name=data)
 
 
 @app.route('/answer', methods=["POST"])
 def answer_test():
-    return render_template("error.html")
+    return render_template("site_pages/error.html")
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -87,24 +137,23 @@ def login():
         data = request.form
         nickname = data['nickname']
         password = data['password']
-        res = make_response(render_template('acept_login.html'))
+        res = make_response(render_template('user/acsept_login.html'))
         name, id = get_id_by_name(nickname=nickname, password=password)
         res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
         return res
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('user/login.html')
 
 
 @app.route('/logout')
-# @cache.cached(timeout=300)
 def logout():
-    res = make_response(render_template('logout.html'))
+    res = make_response(render_template('user/logout.html'))
     res.set_cookie('user_id', request.cookies.get('user_id'), max_age=0)
     return res
 
 
 @app.route('/pass_sucses', methods=['POST'])
-# @cache.cached(timeout=300)
+@cache.cached(timeout=300)
 def pass_sucses():
     if request.method == "POST":
         try:
@@ -115,25 +164,23 @@ def pass_sucses():
                 res.set_cookie('foo', f'{random.randint(1, 2)}', max_age=60 * 60 * 24 * 365 * 2)
                 return res
             else:
-                return render_template("error.html")
+                return render_template("site_pages/error.html")
         except Exception as ex:
-            return render_template("error.html")
+            return render_template("site_pages/error.html")
     else:
-        return render_template("home.html", title='Home page')
+        return render_template("site_pages/home.html", title='Home page')
 
 
 @app.route('/enter')
 # @cache.cached(timeout=300)
 def enter():
-    return render_template("entry.html")
+    return render_template("user/login.html")
 
 
-@app.route('/regester', methods=['POST'])
-@app.route('/regester', methods=['GET'])
-@cache.cached(timeout=300)
+@app.route('/regester', methods=['POST', 'GET'])
 def regester():
     if request.method == 'GET':
-        return render_template('regestor.html')
+        return render_template('user/regestor.html')
     if request.method == 'POST':
         try:
             name = request.form["nickname"]
@@ -145,7 +192,7 @@ def regester():
         name, id = get_id_by_name(nickname=name, password=password)
 
         if id is not False:
-            res = make_response(render_template("acept_login.html"))
+            res = make_response(render_template("user/acsept_login.html"))
             res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
             return res
         return redirect('/error')
@@ -154,35 +201,14 @@ def regester():
 @app.route('/about_us')
 # @cache.cached(timeout=300)
 def about_us():
-    return render_template("about_us.html")
+    return render_template("site_pages/about_us.html")
 
 
 @app.route('/error')
 # @cache.cached(timeout=300)
 def error():
-    return render_template('error.html')
+    return render_template('site_pages/error.html')
 
-
-@app.route('/test', methods=["POST"])
-def test_te():
-    name = request.form.get('name')
-    word = request.form.get('word')
-    return f"{name} + {word}"
-
-
-@app.route('/tests/<id>', methods=['GET'])
-def tests(id):
-    if request.method == "GET":
-        data = get_test(id)
-        return render_template('tests.html', data=data)
-
-
-@app.route('/check/<int:id>', methods=['POST'])
-def check(id):
-    if request.method == "POST":
-        user_data = request.form.values()
-        data = get_test(id)
-        return render_template('tests.html', data=data, user_data=user_data)
 
 
 @app.errorhandler(400)

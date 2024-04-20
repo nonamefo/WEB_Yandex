@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tests Data</title>
-</head>
-<body>
+{% extends 'super.html' %}
+{% block title %}
+    Tests Data
+{% endblock %}
+{% block body %}
 <h1>Tests Data</h1>
 {% if request.method == 'GET' %}
-<form action="/check/{{ data['questions']['question_id'] }}" method="post">
+<form action="#" method="post">
     <ul>
         {% for task in data['questions']['question'].split(', ') %}
         <li>{{ task }}</li>
@@ -19,7 +18,7 @@
 {% if request.method == 'POST' %}
 <h2>Results:</h2>
 <ul>
-    {% for task, user_answer in zip(data['questions']['answer_options'].split(', '), user_data) %}
+    {% for task, user_answer in zip(data['questions']['answer'].split(', '), user_data) %}
     <li>{{ task }} - User Answer: {{ user_answer }}</li>
     {% if user_answer == task %}
     <span style="color: green;">Correct!</span>
@@ -29,5 +28,4 @@
     {% endfor %}
 </ul>
 {% endif %}
-</body>
-</html>
+{% endblock %}
