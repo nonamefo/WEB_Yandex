@@ -1,58 +1,3 @@
-# from site_main_code import *
-# from site_main_code.models import *
-#
-#
-# @app.context_processor
-# def inject_message():
-#     return dict(
-#         name_by_key=name_by_key(),
-#         get_test=get_test,
-#         get_all_tasks=get_all_tasks(),
-#         link_API=link_API,
-#         zip=zip,
-#     )
-#
-#
-# @app.route('/', methods=['POST', 'GET'])
-# def main():
-#     return render_template('home.html')
-#
-#
-# @app.route('/login', methods=['POST', 'GET'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.form
-#         nickname = data['nickname']
-#         password = data['password']
-#         res = make_response('acsept_login.html')
-#         name, id = get_id_by_name(nickname=nickname, password=password)
-#         res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
-#         return res
-#     if request.method == 'GET':
-#         return render_template('login.html')
-#
-#
-# @app.route('/regester', methods=['POST', 'GET'])
-# def regester():
-#     if request.method == 'POST':
-#         data = request.form
-#         nickname = data['nickname']
-#         email = data['email']
-#         password = data['password']
-#         create_user(nickname=nickname, email=email, password=password)
-#         res = make_response('acsept_login.html')
-#         name, id = get_id_by_name(nickname=nickname, password=password)
-#         res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
-#         return res
-#     if request.method == 'GET':
-#         return render_template('regestor.html')
-# @app.route('/test', methods=["POST"])
-# def test_te():
-#     name = request.form.get('name')
-#     word = request.form.get('word')
-#     return f"{name} + {word}"
-
-
 from site_main_code import *
 from site_main_code.models import *
 
@@ -67,7 +12,6 @@ def inject_message():
         zip=zip,
         int=int,
     )
-
 
 
 @app.route('/tests/<id>', methods=['GET', 'POST'])
@@ -112,6 +56,7 @@ def check():
                         'owner_id': random.randint(0, 10_000_000_000),  # id создателя вопроса
                         'is_public': True}).json()  # доступен ли всем вопрос
     return render_template('test_pages/acsepte.html')
+
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home')
@@ -171,6 +116,27 @@ def pass_sucses():
         return render_template("site_pages/home.html", title='Home page')
 
 
+@app.route('/get_password', methods=['POST', 'GET'])
+def get_password():
+    if request.method == 'GET':
+        return render_template('user/forget_password.html')
+    if request.method == 'POST':
+        data = request.form
+        email = data['email']
+        passworrd = get_password_by_email(email)
+        if passworrd is not "Неверный адрес":
+            smtpObj = smtplib.SMTP('smtp.mail.ru', 587)
+            smtpObj.starttls()
+            pass_word = config('email_password', default='')
+            email_sender = config('email_sender', default='')
+            smtpObj.login(email_sender, pass_word)
+            smtpObj.sendmail(email_sender, email, f"""Your password is {passworrd}""")
+            smtpObj.quit()
+            return render_template('user/forget_password.html')
+        else:
+            return redirect('/error')
+
+
 @app.route('/enter')
 # @cache.cached(timeout=300)
 def enter():
@@ -208,7 +174,6 @@ def about_us():
 # @cache.cached(timeout=300)
 def error():
     return render_template('site_pages/error.html')
-
 
 
 @app.errorhandler(400)

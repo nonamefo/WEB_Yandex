@@ -30,6 +30,13 @@ def get_by_name(nickname: str, password: str):
         return True, lst[0]
 
 
+def get_password(email):
+    user = Article.query.filter_by(email=email).first()
+    if user:
+        return user.password
+    else:
+        return "Неверный адрес"
+
 def get_user_name_password():
     id = request.cookies.get("user_id")
     print(id)

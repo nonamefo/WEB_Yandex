@@ -1,16 +1,17 @@
 import random
 import os
+import smtplib
 
 from flask import Flask, render_template, request, make_response, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CSRFProtect
+# from flask_wtf.csrf import CSRFProtect
 from flask_caching import Cache
-
+from decouple import config
 import requests
 
 app = Flask(__name__)
 
-# os.environ['FLASK_ENV'] = 'production'
+os.environ['FLASK_ENV'] = 'production'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['DEBUG'] = True
 app.config['TESTING'] = False
