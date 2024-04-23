@@ -45,16 +45,18 @@ def check():
 
     combined_task_data = ", ".join(task_values)
     combined_answer_data = ", ".join(answer_values)
-    requests.post(f'http://127.0.0.1:5050/{API_key}/questions',
+
+    requests.post(link_API + f'/{API_key}/questions',
                   json={'question_id': random.randint(0, 10_000_000_000),
-                        # использовать уникальное значение() иначе возникает 422 ошибка:
+                        # использовать уникальное значение(random.randint()) иначе возникает 422 ошибка:
                         # Question with id 'question_id' already in the database")
                         'question': combined_task_data,  # вопрос который задаётся
                         'type': 'one_choice',  # тип вопроса множественный/единственный ответ
-                        'answer_options': '',  # варианты ответов указанных через запятую
+                        'answer_options': '1,2,3,pineapple',  # варианты ответов указанных через запятую
                         'answer': combined_answer_data,  # ответ/ответы указанные через запятую
                         'owner_id': random.randint(0, 10_000_000_000),  # id создателя вопроса
-                        'is_public': True}).json()  # доступен ли всем вопрос
+                        'is_public': True}).json()
+    # доступен ли всем вопрос
     return render_template('test_pages/acsepte.html')
 
 
@@ -117,22 +119,30 @@ def pass_sucses():
 
 
 @app.route('/get_password', methods=['POST', 'GET'])
-def get_password():
+def show_forget_password_page():
     if request.method == 'GET':
         return render_template('user/forget_password.html')
     if request.method == 'POST':
         data = request.form
         email = data['email']
+
         passworrd = get_password_by_email(email)
+
         if passworrd is not "Неверный адрес":
-            smtpObj = smtplib.SMTP('smtp.mail.ru', 587)
-            smtpObj.starttls()
-            pass_word = config('email_password', default='')
-            email_sender = config('email_sender', default='')
-            smtpObj.login(email_sender, pass_word)
-            smtpObj.sendmail(email_sender, email, f"""Your password is {passworrd}""")
-            smtpObj.quit()
-            return render_template('user/forget_password.html')
+            try:
+                smtpObj = smtplib.SMTP('smtp.mail.ru', 587)
+                smtpObj.starttls()
+
+                pass_word = config('email_password', default='')
+                email_sender = config('email_sender', default='')
+
+                smtpObj.login(email_sender, pass_word)
+                smtpObj.sendmail(email_sender, email, f"""Your password is {passworrd}""")
+                smtpObj.quit()
+
+                return render_template('user/forget_password.html')
+            except Exception as _ex:
+                return redirect('/error')
         else:
             return redirect('/error')
 

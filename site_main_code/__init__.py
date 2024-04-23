@@ -1,13 +1,12 @@
 import random
 import os
-import smtplib
 
 from flask import Flask, render_template, request, make_response, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
-# from flask_wtf.csrf import CSRFProtect
 from flask_caching import Cache
-from decouple import config
 import requests
+import smtplib
+from decouple import config
 
 app = Flask(__name__)
 
@@ -32,6 +31,5 @@ except KeyError:
                   json={'login': '123', 'password': '321'}).json()
     API_key = requests.get(link_API + '/getapikey',
                            json={'login': '123', 'password': '321'}).json()['api_key']
-
 
 from site_main_code import database, server, models

@@ -31,10 +31,13 @@ def get_by_name(nickname: str, password: str):
 
 
 def get_password(email):
-    user = Article.query.filter_by(email=email).first()
-    if user:
-        return user.password
-    else:
+    try:
+        user = Article.query.filter_by(email=email).first()
+        if user:
+            return user.password
+        else:
+            return "Неверный адрес"
+    except Exception as _ex:
         return "Неверный адрес"
 
 def get_user_name_password():
