@@ -3,8 +3,13 @@ from site_main_code import requests, API_key, link_API
 # импортирование необходимых библиотек функций и переменных
 
 # получение id пользователя по имени и паролю
+
 def get_id_by_name(nickname: str, password: str):
-    return get_by_name(nickname, password)
+    user_result = get_by_name(nickname, password)
+    if user_result:
+        return user_result
+    else:
+        return None
 
 # создание пользователя с получением данных
 def create_user(email: str, nickname: str, password: str):

@@ -22,12 +22,11 @@ def regustration(email: str, nickname: str, password: str, isAdmin: bool = False
 
 def get_by_name(nickname: str, password: str):
     users = Article.query.filter_by(nickname=nickname).all()
-    lst = ''
-    for i in users:
-        lst = str(i.id) + ', ' + str(i.nickname) + ', ' + str(i.password)
-    print(lst)
-    if lst.split(', ')[2] == password:
-        return True, lst[0]
+    for user in users:
+        if user.password == password:
+            return user.nickname, user.id
+
+    return None
 
 
 def get_password(email):
@@ -56,7 +55,6 @@ def get_user_name_password():
 
 def get_by_cookie_name():
     id = request.cookies.get("user_id")
-    print(id)
 
     users = Article.query.filter_by(id=id).all()
     lst = []

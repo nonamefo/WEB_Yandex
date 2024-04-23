@@ -78,16 +78,21 @@ def answer_test():
 
 
 @app.route('/login', methods=['POST', 'GET'])
-# @cache.cached(timeout=300)
 def login():
     if request.method == 'POST':
         data = request.form
         nickname = data['nickname']
         password = data['password']
         res = make_response(render_template('user/acsept_login.html'))
-        name, id = get_id_by_name(nickname=nickname, password=password)
-        res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
-        return res
+        user_info = get_id_by_name(nickname=nickname, password=password)
+
+        if user_info:
+            name, id = user_info
+            res.set_cookie('user_id', f'{id}', max_age=60 * 60 * 24 * 365 * 2)
+            return res
+        else:
+            return redirect('/error')
+
     if request.method == 'GET':
         return render_template('user/login.html')
 
@@ -147,10 +152,7 @@ def show_forget_password_page():
             return redirect('/error')
 
 
-@app.route('/enter')
-# @cache.cached(timeout=300)
-def enter():
-    return render_template("user/login.html")
+
 
 
 @app.route('/regester', methods=['POST', 'GET'])

@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 os.environ['FLASK_ENV'] = 'production'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 app.config['TESTING'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = None
 app.config['SECRET_KEY'] = 'frog_and_rabit'
@@ -21,7 +21,7 @@ app.config['USE_X_SENDFILE'] = False
 
 db = SQLAlchemy(app)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
-link_API = 'http://127.0.0.1:5050'
+link_API = 'https://f720-94-29-124-153.ngrok-free.app'
 
 try:
     API_key = requests.get(link_API + '/getapikey',
